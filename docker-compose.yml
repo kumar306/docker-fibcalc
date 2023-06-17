@@ -8,7 +8,19 @@ services:
   redis: 
     image: 'redis:latest'
   
-  server: 
+  nginx:
+  # since nginx always routing traffic to our app, it should always be runnning
+    restart: always
+    depends_on:
+      - backend
+      - client
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+
+  backend: 
     build: 
       dockerfile: Dockerfile.dev
       context: ./server
@@ -51,3 +63,4 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
+    
