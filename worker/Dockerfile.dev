@@ -1,0 +1,17 @@
+# base image
+FROM node:14.14.0-alpine 
+
+# container working dir, not host
+WORKDIR /app
+
+# first copy package.json to container for caching purpose
+COPY ./package.json ./
+
+# install node modules
+RUN npm install
+
+# copy everything else
+COPY . .
+
+#container start command
+CMD [ "npm", "run", "dev" ]
