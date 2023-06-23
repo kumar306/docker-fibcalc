@@ -1,17 +1,25 @@
 # base image
 FROM node:16-alpine 
 
-# container working dir, not host
-WORKDIR /app
+# set the user name to use
+USER node
 
-# first copy package.json to container for caching purpose
-COPY ./package.json ./
+# -p means if directory not created, then create it
+RUN mkdir -p /home/node/app
+
+# sets container working dir, not host - sets ownership to 'root' user by default
+WORKDIR /home/node/app
+
+# allow permissions for react to create .cache file within node_modules - without this, app won't work
+# change permissions of node_modules folder to 'node' user from 'root' user
+COPY --chown=node:node ./package.json ./
 
 # install node modules
 RUN npm install
 
-# copy everything else
-COPY . .
+# copy everything and ensure that the file owner is user 'node' 
+# 'node' is the non root user whose files can be accessed. if user is 'root' - access permission denied
+COPY --chown=node:node ./ ./
 
 #container start command
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "start" ]

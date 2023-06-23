@@ -11,6 +11,7 @@ services:
   nginx:
   # since nginx always routing traffic to our app, it should always be runnning
     restart: always
+    # nginx depend that containers it routes to already be running when it sets proxy
     depends_on:
       - backend
       - client
@@ -61,6 +62,8 @@ services:
       dockerfile: Dockerfile.dev
       context: ./client
     volumes:
-      - /app/node_modules
-      - ./client:/app
+      - /home/node/app/node_modules
+      - ./client:/home/node/app
+    environment:
+      - WDS_SOCKET_PORT=0
     
