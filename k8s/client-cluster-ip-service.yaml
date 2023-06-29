@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: client
+  ports:
+    - port: 3052
+      targetPort: 3000
+
+    # clusterIP exposes the set of pods it is connected to the other objects in the cluster, not externally
+    
