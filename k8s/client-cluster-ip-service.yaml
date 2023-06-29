@@ -7,8 +7,7 @@ spec:
   selector:
     component: client
   ports:
-    - port: 3052
+    - port: 3000
       targetPort: 3000
 
     # clusterIP exposes the set of pods it is connected to the other objects in the cluster, not externally
-    

@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    # to specify that our ingress service must be associated with nginx controller of 'ingress-nginx' repo
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    # so we can use regex in our path
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # additional k-v pairs which is configuration info to extend functionality of ingress service
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: client-cluster-ip-service
+                # name and port of client's cluster IP to route to that service when hit with this path
+                port:
+                  number: 3000
+          - path: /api/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-cluster-ip-service
+                port:
+                  number: 5000
+    

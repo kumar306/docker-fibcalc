@@ -7,7 +7,7 @@ spec:
   selector:
     component: backend
   ports:
-    - port: 5330
+    - port: 5000
       targetPort: 5000
 
     # port - i set it as a random port - it will get routed to port 5000 on the container listening in pod
