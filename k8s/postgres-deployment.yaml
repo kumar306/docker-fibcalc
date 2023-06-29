@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: postgres
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: db-persistent-volume-claim
+        # requesting to get the PVC to access in our pods in postgres deployment
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          volumeMounts: 
+            - name: postgres-storage #the volume name specified here should match to PVC volume name to access that particular PVC (mapping the names)
+              mountPath: /var/lib/postgresql/data #data directory which postgres uses for storing data on the hard drive
+              subPath: postgres #within the mountPath, create a folder named 'postgres' where data is stored

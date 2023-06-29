@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-persistent-volume-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+# PVC - request kubernetes to search for a matching PV and allocate that to pod config - pod will make PVC req for persistent storage
+# accessModes ReadWriteOnce - single node can use this, ReadOnlyMany - many can only read, ReadWriteMany - many can read,write
