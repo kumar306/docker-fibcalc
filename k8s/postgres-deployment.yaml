@@ -26,3 +26,9 @@ spec:
             - name: postgres-storage #the volume name specified here should match to PVC volume name to access that particular PVC (mapping the names)
               mountPath: /var/lib/postgresql/data #data directory which postgres uses for storing data on the hard drive
               subPath: postgres #within the mountPath, create a folder named 'postgres' where data is stored
+          env: 
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pwd-secret #secret name which we created
+                  key: PGPASSWORD #key taken from key-value pair of created secret

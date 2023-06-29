@@ -17,3 +17,22 @@ spec:
           image: stephengrider/multi-server
           ports:
             - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service
+            - name: REDIS_PORT
+              value: '6379'
+            - name: PGUSER  
+              value: postgres
+            - name: PGHOST
+              value: postgres-cluster-ip-service
+            - name: PGPORT  
+              value: '5432'
+            - name: PGDATABASE
+              value: postgres
+              # secret object passed to env for PGPASSWORD
+            - name: PGPASSWORD #setting this as env name as in our image, we would be searching for env variable with this name (we could have set any name)
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pwd-secret #name of the secret
+                  key: PGPASSWORD #key specified in the key-value pair 
